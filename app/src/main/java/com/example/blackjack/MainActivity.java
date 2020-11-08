@@ -1,6 +1,7 @@
 package com.example.blackjack;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -14,7 +15,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,15 +37,17 @@ public class MainActivity extends AppCompatActivity {
         balanceTextView = (TextView) findViewById(R.id.playerBalance);
     }
 
-    public void fetchBalance(View view){
-        mDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @SuppressLint("SetTextI18n")
+    protected void onStart(){
+        super.onStart();
+        mDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 if (documentSnapshot.exists()){
                     String balanceText= documentSnapshot.getString(BALANCE);
-                    Log.d(TAG, "Textview updated yoo");
+                    Log.d(TAG, "Textview updated yoooo");
                     balanceTextView.setText(balanceText);
+                } else if (error!=null){
+                    Log.w(TAG, "Got an error",error);
                 }
             }
         });
