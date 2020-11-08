@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import java.util.HashMap;
 import java.util.Map;
 
+//test
 public class MainActivity extends AppCompatActivity {
     public static final String BALANCE="playerBalance";
     public static final String TAG = "Player Balance";
