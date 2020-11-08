@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "Textview updated yoooo");
                     balanceTextView.setText(balanceText);
                 } else if (error!=null){
-                    Log.w(TAG, "Got an error",error);
+                    Log.w(TAG, "Got an errorr",error);
                 }
             }
         });
