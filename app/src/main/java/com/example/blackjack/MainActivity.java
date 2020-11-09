@@ -3,6 +3,7 @@ package com.example.blackjack;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -31,11 +32,16 @@ public class MainActivity extends AppCompatActivity {
 
     public DocumentReference mDocRef = FirebaseFirestore.getInstance().document("game/playerBalance");
 
+    AppDatabase db = Room.databaseBuilder(getApplicationContext(), //this is our on-device storage
+            AppDatabase.class, "database-name").build();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         balanceTextView = (TextView) findViewById(R.id.playerBalance);
+
+
     }
 
     protected void onStart(){
