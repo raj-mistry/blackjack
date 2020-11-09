@@ -32,8 +32,11 @@ public class MainActivity extends AppCompatActivity {
 
     public DocumentReference mDocRef = FirebaseFirestore.getInstance().document("game/playerBalance");
 
+    /*
     AppDatabase db = Room.databaseBuilder(getApplicationContext(), //this is our on-device storage
             AppDatabase.class, "database-name").build();
+
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
