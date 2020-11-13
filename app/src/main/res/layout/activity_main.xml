@@ -29,7 +29,7 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Update balance"
+        android:text="Add Funds"
         android:textAlignment="center"
         android:textSize="36sp"
         android:textStyle="bold" />
@@ -49,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:onClick="updateBalance"
-        android:text="Update"
+        android:text="Add"
         android:textSize="36sp"
         app:backgroundTint="#2AA2FF" />
 

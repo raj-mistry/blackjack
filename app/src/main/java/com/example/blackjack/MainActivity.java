@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "Player Balance";
 
     TextView balanceTextView;
+    int currentBalance;
 
     public DocumentReference mDocRef = FirebaseFirestore.getInstance().document("game/playerBalance");
 
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                     String balanceText= documentSnapshot.getString(BALANCE);
                     Log.d(TAG, "Textview updated yoooo");
                     balanceTextView.setText(balanceText);
+                    currentBalance = Integer.parseInt(balanceText);
                 } else if (error!=null){
                     Log.w(TAG, "Got an error",error);
                 }
@@ -65,10 +67,11 @@ public class MainActivity extends AppCompatActivity {
     public void updateBalance(View view) {
         EditText updateBalance = (EditText) findViewById(R.id.updateBalance);
         String balance = updateBalance.getText().toString();
+        int newBalance = currentBalance + Integer.parseInt(balance);
 
         if (balance.isEmpty()){return;}
         Map<String, Object> dataToSave = new HashMap<String, Object>();
-        dataToSave.put(BALANCE, balance);
+        dataToSave.put(BALANCE, Integer.toString(newBalance));
 
         mDocRef.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
