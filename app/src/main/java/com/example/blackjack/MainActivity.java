@@ -85,4 +85,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void resetBalance(View view) {
+        Map<String, Object> dataToSave = new HashMap<String, Object>();
+        dataToSave.put(BALANCE, "0");
+
+        mDocRef.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "Document has been saved");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Document was not saved", e);
+            }
+        });
+    }
 }

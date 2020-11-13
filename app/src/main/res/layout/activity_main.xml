@@ -53,4 +53,12 @@
         android:textSize="36sp"
         app:backgroundTint="#2AA2FF" />
 
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:onClick="resetBalance"
+        android:text="Reset"
+        tools:text="Reset" />
+
 </LinearLayout>
