@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     /*
     AppDatabase db = Room.databaseBuilder(getApplicationContext(), //this is our on-device storage
             AppDatabase.class, "database-name").build();
-
      */
 
     @Override
@@ -43,10 +42,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         balanceTextView = (TextView) findViewById(R.id.playerBalance);
-
-
     }
 
+    //display current player balance
     protected void onStart(){
         super.onStart();
         mDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -63,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //update player balance into firebase
     public void updateBalance(View view) {
         EditText updateBalance = (EditText) findViewById(R.id.updateBalance);
         String balance = updateBalance.getText().toString();
