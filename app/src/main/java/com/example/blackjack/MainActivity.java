@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //reset player balance (meant for debugging purposes only)
     public void resetBalance(View view) {
         Map<String, Object> dataToSave = new HashMap<String, Object>();
         dataToSave.put(BALANCE, "0");
