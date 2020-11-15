@@ -20,16 +20,17 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-//hi
 public class MainActivity extends AppCompatActivity {
     public static final String BALANCE="playerBalance";
     public static final String TAG = "Player Balance";
 
     TextView balanceTextView;
-    int currentBalance;
+    float currentBalance;
+    DecimalFormat currency = new DecimalFormat("#.##");
 
     public DocumentReference mDocRef = FirebaseFirestore.getInstance().document("game/playerBalance");
 
@@ -54,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
                 if (documentSnapshot.exists()){
                     String balanceText= documentSnapshot.getString(BALANCE);
                     Log.d(TAG, "Textview updated yoooo");
-                    balanceTextView.setText(balanceText);
-                    currentBalance = Integer.parseInt(balanceText);
+                    balanceTextView.setText("$"+balanceText);
+                    currentBalance = Float.parseFloat(balanceText);
                 } else if (error!=null){
                     Log.w(TAG, "Got an error",error);
                 }
@@ -67,11 +68,11 @@ public class MainActivity extends AppCompatActivity {
     public void updateBalance(View view) {
         EditText updateBalance = (EditText) findViewById(R.id.updateBalance);
         String balance = updateBalance.getText().toString();
-        int newBalance = currentBalance + Integer.parseInt(balance);
+        float newBalance = currentBalance + Float.parseFloat(balance);
 
         if (balance.isEmpty()){return;}
         Map<String, Object> dataToSave = new HashMap<String, Object>();
-        dataToSave.put(BALANCE, Integer.toString(newBalance));
+        dataToSave.put(BALANCE, currency.format(newBalance));
 
         mDocRef.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

@@ -39,10 +39,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="enter a number"
-        android:inputType="number"
-        android:textAlignment="center"
-        android:textSize="36sp" />
+        android:hint="Enter a number"
+        android:inputType="numberDecimal" />
 
     <Button
         android:id="@+id/updateButton"
