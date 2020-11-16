@@ -2,6 +2,7 @@ package com.example.blackjack;
 
 public class Users {
     public String name, username, email;
+    public double balance;
 
     public Users(){}
 
@@ -9,6 +10,6 @@ public class Users {
         this.name = fname + " " + lname;
         this.username = username;
         this.email = email;
+        this.balance = 0;
     }
-
 }

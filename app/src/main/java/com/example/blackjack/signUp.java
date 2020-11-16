@@ -74,27 +74,6 @@ public class signUp extends AppCompatActivity {
             return;
         }
 
-        /*
-        Map<String, Object> dataToSave = new HashMap<String, Object>();
-        dataToSave.put("name", fname1+" "+lname1);
-        dataToSave.put("email", email1);
-        dataToSave.put("password", password.getText().toString());
-        dataToSave.put("username", username1);
-        dataToSave.put("playerBalance", "0");
-
-        mDocRef.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d(TAG, "Document has been saved");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Document was not saved", e);
-            }
-        });
-
-         */
         mAuth.createUserWithEmailAndPassword(email1, password1)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>(){
                     @Override
@@ -110,12 +89,12 @@ public class signUp extends AppCompatActivity {
                                         Toast.makeText(signUp.this,"Successful", Toast.LENGTH_LONG).show();
                                     }
                                     else{
-                                        Toast.makeText(signUp.this,"Failed", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(signUp.this,"Failed 1", Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
                         } else{
-                            Toast.makeText(signUp.this,"Failed", Toast.LENGTH_LONG).show();
+                            Toast.makeText(signUp.this,"Failed 2", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
