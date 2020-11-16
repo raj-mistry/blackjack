@@ -9,6 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BlackJack">
+        <activity android:name=".login"></activity>
+        <activity
+            android:name=".signUp"
+            android:exported="true"></activity>
+        <activity
+            android:name=".bettingScreen"
+            android:exported="true" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

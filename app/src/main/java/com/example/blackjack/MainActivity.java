@@ -3,6 +3,7 @@ package com.example.blackjack;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,8 +29,15 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "Player Balance";
 
     TextView balanceTextView;
+    float currentBalance;
+    DecimalFormat currency = new DecimalFormat("#.##");
 
-    public DocumentReference mDocRef = FirebaseFirestore.getInstance().document("game/playerBalance");
+    public DocumentReference mDocRef = FirebaseFirestore.getInstance().document("playerInfo/7O0zBXDRU8kYUBNyetvB");
+
+    /*
+    AppDatabase db = Room.databaseBuilder(getApplicationContext(), //this is our on-device storage
+            AppDatabase.class, "database-name").build();
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         balanceTextView = (TextView) findViewById(R.id.playerBalance);
     }
 
+    //display current player balance
     protected void onStart(){
         super.onStart();
         mDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -45,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
                 if (documentSnapshot.exists()){
                     String balanceText= documentSnapshot.getString(BALANCE);
                     Log.d(TAG, "Textview updated yoooo");
-                    balanceTextView.setText(balanceText);
+                    balanceTextView.setText("$"+balanceText);
+                    currentBalance = Float.parseFloat(balanceText);
                 } else if (error!=null){
                     Log.w(TAG, "Got an errorr",error);
                 }
@@ -53,13 +64,33 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //update player balance into firebase
     public void updateBalance(View view) {
         EditText updateBalance = (EditText) findViewById(R.id.updateBalance);
         String balance = updateBalance.getText().toString();
+        float newBalance = currentBalance + Float.parseFloat(balance);
 
         if (balance.isEmpty()){return;}
         Map<String, Object> dataToSave = new HashMap<String, Object>();
-        dataToSave.put(BALANCE, balance);
+        dataToSave.put(BALANCE, currency.format(newBalance));
+
+        mDocRef.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "Document has been saved");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Document was not saved", e);
+            }
+        });
+    }
+
+    //reset player balance (meant for debugging purposes only)
+    public void resetBalance(View view) {
+        Map<String, Object> dataToSave = new HashMap<String, Object>();
+        dataToSave.put(BALANCE, "0");
 
         mDocRef.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

@@ -29,7 +29,7 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Update balance"
+        android:text="Add Funds"
         android:textAlignment="center"
         android:textSize="36sp"
         android:textStyle="bold" />
@@ -39,18 +39,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="enter a number"
-        android:inputType="number"
-        android:textAlignment="center"
-        android:textSize="36sp" />
+        android:hint="Enter a number"
+        android:inputType="numberDecimal" />
 
     <Button
         android:id="@+id/updateButton"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:onClick="updateBalance"
-        android:text="Update"
+        android:text="Add"
         android:textSize="36sp"
         app:backgroundTint="#2AA2FF" />
+
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:onClick="resetBalance"
+        android:text="Reset"
+        tools:text="Reset" />
 
 </LinearLayout>
