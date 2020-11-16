@@ -13,4 +13,19 @@ public class Users {
         this.balance = 0;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
 }

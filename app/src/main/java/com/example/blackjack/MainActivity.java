@@ -32,14 +32,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String BALANCE="playerBalance";
+    public static final String BALANCE="balance";
     public static final String TAG = "Player Balance";
 
-    public DatabaseReference mRef;
+    public DocumentReference mDocRef;
 
     TextView balanceTextView;
     double currentBalance;
-    String UID;
+    String UID, name, email, username;
 
 
     /*
@@ -54,27 +54,22 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         UID = intent.getStringExtra("USER");
         balanceTextView = (TextView) findViewById(R.id.playerBalance);
-        mRef = FirebaseDatabase.getInstance().getReference().child("playerInfo").child(UID).child("balance");
+        mDocRef = FirebaseFirestore.getInstance().document("playerInfo/" +UID);
     }
 
     //display current player balance
     protected void onStart(){
         super.onStart();
-        mRef.addValueEventListener(new ValueEventListener() {
+        mDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue().toString();
-                balanceTextView.setText("$"+value);
-                currentBalance = Double.parseDouble(value);
-                Log.d(TAG, "Value is: " + value);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                if (documentSnapshot.exists()) {
+                    currentBalance = documentSnapshot.getDouble(BALANCE);
+                    Log.d(TAG, "Textview updated");
+                    balanceTextView.setText("$"+Double.toString(currentBalance));
+                } else if (error != null) {
+                    Log.w(TAG, "Got an error", error);
+                }
             }
         });
     }
@@ -84,15 +79,39 @@ public class MainActivity extends AppCompatActivity {
         EditText updateBalance = (EditText) findViewById(R.id.updateBalance);
         String balance = updateBalance.getText().toString();
         if (balance.isEmpty()){
-            Toast.makeText(this, "Please Enter a Value", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "Please Enter a Value", Toast.LENGTH_LONG).show();
             return;
         }
         double newBalance = currentBalance + Double.parseDouble(balance);
-        mRef.setValue(Math.round(newBalance * 100.0) / 100.0);
+        Map<String, Object> dataToSave = new HashMap<String, Object>();
+        dataToSave.put(BALANCE, newBalance);
+        mDocRef.update(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "Document has been saved");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Document was not saved", e);
+            }
+        });
     }
 
     //reset player balance (meant for debugging purposes only)
     public void resetBalance(View view) {
-        mRef.setValue(0);
+        Map<String, Object> dataToSave = new HashMap<String, Object>();
+        dataToSave.put(BALANCE, 0.0);
+        mDocRef.update(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "Document has been saved");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Document was not saved", e);
+            }
+        });
     }
 }

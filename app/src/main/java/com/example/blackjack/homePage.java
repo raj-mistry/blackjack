@@ -27,4 +27,10 @@ public class homePage extends AppCompatActivity {
         intent.putExtra("USER", UID);
         startActivity(intent);
     }
+
+    public void play(View view){
+        Intent intent = new Intent(getBaseContext(), bettingScreen.class);
+        intent.putExtra("USER", UID);
+        startActivity(intent);
+    }
 }
