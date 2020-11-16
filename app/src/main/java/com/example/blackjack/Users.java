@@ -12,4 +12,5 @@ public class Users {
         this.email = email;
         this.balance = 0;
     }
+
 }

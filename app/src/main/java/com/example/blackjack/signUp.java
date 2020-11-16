@@ -3,6 +3,7 @@ package com.example.blackjack;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -87,6 +88,9 @@ public class signUp extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()){
                                         Toast.makeText(signUp.this,"Successful", Toast.LENGTH_LONG).show();
+                                        Intent intent = new Intent(getBaseContext(), homePage.class);
+                                        intent.putExtra("USER", FirebaseAuth.getInstance().getUid());
+                                        startActivity(intent);
                                     }
                                     else{
                                         Toast.makeText(signUp.this,"Failed 1", Toast.LENGTH_LONG).show();

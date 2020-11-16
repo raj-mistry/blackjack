@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -31,8 +33,10 @@ public class MainActivity extends AppCompatActivity {
     TextView balanceTextView;
     float currentBalance;
     DecimalFormat currency = new DecimalFormat("#.##");
+    String UID;
 
     public DocumentReference mDocRef = FirebaseFirestore.getInstance().document("playerInfo/7O0zBXDRU8kYUBNyetvB");
+    public FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     /*
     AppDatabase db = Room.databaseBuilder(getApplicationContext(), //this is our on-device storage
@@ -43,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+        UID = intent.getStringExtra("USER");
         balanceTextView = (TextView) findViewById(R.id.playerBalance);
     }
 
