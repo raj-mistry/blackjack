@@ -12,10 +12,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -30,13 +35,12 @@ public class MainActivity extends AppCompatActivity {
     public static final String BALANCE="playerBalance";
     public static final String TAG = "Player Balance";
 
+    public DatabaseReference mRef;
+
     TextView balanceTextView;
-    float currentBalance;
-    DecimalFormat currency = new DecimalFormat("#.##");
+    double currentBalance;
     String UID;
 
-    public DocumentReference mDocRef = FirebaseFirestore.getInstance().document("playerInfo/7O0zBXDRU8kYUBNyetvB");
-    public FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     /*
     AppDatabase db = Room.databaseBuilder(getApplicationContext(), //this is our on-device storage
@@ -50,22 +54,27 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         UID = intent.getStringExtra("USER");
         balanceTextView = (TextView) findViewById(R.id.playerBalance);
+        mRef = FirebaseDatabase.getInstance().getReference().child("playerInfo").child(UID).child("balance");
     }
 
     //display current player balance
     protected void onStart(){
         super.onStart();
-        mDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        mRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                if (documentSnapshot.exists()){
-                    String balanceText= documentSnapshot.getString(BALANCE);
-                    Log.d(TAG, "Textview updated yoooo");
-                    balanceTextView.setText("$"+balanceText);
-                    currentBalance = Float.parseFloat(balanceText);
-                } else if (error!=null){
-                    Log.w(TAG, "Got an error",error);
-                }
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = dataSnapshot.getValue().toString();
+                balanceTextView.setText("$"+value);
+                currentBalance = Double.parseDouble(value);
+                Log.d(TAG, "Value is: " + value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
     }
@@ -74,40 +83,16 @@ public class MainActivity extends AppCompatActivity {
     public void updateBalance(View view) {
         EditText updateBalance = (EditText) findViewById(R.id.updateBalance);
         String balance = updateBalance.getText().toString();
-        float newBalance = currentBalance + Float.parseFloat(balance);
-
-        if (balance.isEmpty()){return;}
-        Map<String, Object> dataToSave = new HashMap<String, Object>();
-        dataToSave.put(BALANCE, currency.format(newBalance));
-
-        mDocRef.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d(TAG, "Document has been saved");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Document was not saved", e);
-            }
-        });
+        if (balance.isEmpty()){
+            Toast.makeText(this, "Please Enter a Value", Toast.LENGTH_LONG).show();
+            return;
+        }
+        double newBalance = currentBalance + Double.parseDouble(balance);
+        mRef.setValue(Math.round(newBalance * 100.0) / 100.0);
     }
 
     //reset player balance (meant for debugging purposes only)
     public void resetBalance(View view) {
-        Map<String, Object> dataToSave = new HashMap<String, Object>();
-        dataToSave.put(BALANCE, "0");
-
-        mDocRef.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d(TAG, "Document has been saved");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Document was not saved", e);
-            }
-        });
+        mRef.setValue(0);
     }
 }
