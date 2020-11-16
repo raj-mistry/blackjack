@@ -58,4 +58,8 @@ public class bettingScreen extends AppCompatActivity {
         });
         bet.setText("$"+currency.format(betValue.getValue()));
     }
+
+    /*
+    TO-DO: Prevent user from going above maximum value on their bet
+     */
 }

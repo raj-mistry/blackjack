@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     float currentBalance;
     DecimalFormat currency = new DecimalFormat("#.##");
 
-    public DocumentReference mDocRef = FirebaseFirestore.getInstance().document("game/playerBalance");
+    public DocumentReference mDocRef = FirebaseFirestore.getInstance().document("game/playerInfo");
 
     /*
     AppDatabase db = Room.databaseBuilder(getApplicationContext(), //this is our on-device storage
