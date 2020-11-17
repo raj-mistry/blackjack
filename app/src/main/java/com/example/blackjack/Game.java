@@ -18,6 +18,7 @@ public class Game extends AppCompatActivity {
     protected int currentIndex = 0;
     protected int userTotal = 0;
     protected int dealerTotal = 0;
+    protected boolean winStatus=false;
 
     protected boolean userBust=false;
     protected boolean dealerBust=false;
@@ -26,6 +27,7 @@ public class Game extends AppCompatActivity {
     TextView dealerCards;
     TextView userPile;
     TextView userCards;
+    TextView gameStatus;
 
     Button hitMeButton;
     Button stopButton;
@@ -41,6 +43,7 @@ public class Game extends AppCompatActivity {
         userCards = (TextView) findViewById(R.id.userCards);
         hitMeButton = findViewById(R.id.hitMeButton);
         stopButton = findViewById(R.id.stopButton);
+        gameStatus = findViewById(R.id.gameStatus);
 
         Deck = shuffleArray(Deck);
 
@@ -48,12 +51,33 @@ public class Game extends AppCompatActivity {
         hitUser();
         hitDealer();
         hitDealer();
-        
+
         hitMeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 hitUser();
                 //hitUser();
+                if (userBust==true){
+                    //END THE GAME
+                    gameStatus.setText("PLAYER BUST, PLAYER DEFEAT!");
+                    stop();
+                }
+            }
+        });
+
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stop();
+                playDealer();
+                if (dealerBust==true){
+                    gameStatus.setText("DEALER BUST, PLAYER VICTORY!");
+                    winStatus=true;
+                }
+                else{
+                    gameStatus.setText("PLAYER DEFEAT!");
+
+                }
             }
         });
 
@@ -98,8 +122,8 @@ public class Game extends AppCompatActivity {
     }
 
     public void setDealerBust(){
-        if (userTotal>21){
-            userBust=true;
+        if (dealerTotal>21){
+            dealerBust=true;
         }
     }
 
@@ -112,6 +136,16 @@ public class Game extends AppCompatActivity {
         setDealerBust();
         dealerPile.setText("Dealer Pile: "+ Integer.toString(dealerTotal));
         dealerCards.setText("Dealer Cards: "+ dealerArray.toString());
+    }
+
+    public void playDealer(){
+        while (dealerTotal<userTotal){
+            hitDealer();
+        }
+    }
+
+    public void stop(){
+        hitMeButton.setEnabled(false);
     }
 
 }
