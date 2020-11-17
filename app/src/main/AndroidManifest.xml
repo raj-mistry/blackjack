@@ -9,10 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BlackJack">
-        <activity android:name=".login"></activity>
+
+        <activity
+            android:name=".Game"
+            android:exported="true" />
+
+        <activity android:name=".login" />
         <activity
             android:name=".signUp"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".bettingScreen"
             android:exported="true" />
