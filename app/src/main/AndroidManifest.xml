@@ -12,6 +12,9 @@
         <activity android:name=".homePage"></activity>
         <activity android:name=".login" />
         <activity
+            android:name=".Game"
+            android:exported="true" />
+        <activity
             android:name=".signUp"
             android:exported="true" />
         <activity
