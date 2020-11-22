@@ -86,6 +86,11 @@ public class Game extends AppCompatActivity {
             }
         });
 
+
+
+
+        
+
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,6 +98,9 @@ public class Game extends AppCompatActivity {
                 reset();
             }
         });
+
+
+
 
     }
     public void reset(){
