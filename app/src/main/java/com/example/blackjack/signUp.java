@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +28,8 @@ import java.util.Map;
 public class signUp extends AppCompatActivity {
 
     public static final String TAG = "Player Info";
-    TextView fname, lname, email, username, password, confirmedPass;
+    private TextView fname, lname, email, username, password, confirmedPass;
+    private ProgressBar pb;
     private FirebaseAuth mAuth;
 
 
@@ -35,7 +37,7 @@ public class signUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
+        pb = findViewById(R.id.progressBar);
         mAuth = FirebaseAuth.getInstance();
         fname = findViewById(R.id.textFname);
         lname = findViewById(R.id.textLname);
@@ -74,7 +76,7 @@ public class signUp extends AppCompatActivity {
             password.setError("Invalid password or passwords do not match");
             return;
         }
-
+        pb.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(email1, password1)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>(){
                     @Override
@@ -86,6 +88,7 @@ public class signUp extends AppCompatActivity {
                             mDocRef.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+                                    pb.setVisibility(View.GONE);
                                     Toast.makeText(signUp.this, "Success", Toast.LENGTH_LONG).show();
                                     Intent intent = new Intent(getBaseContext(), homePage.class);
                                     intent.putExtra("USER", UID);
@@ -94,10 +97,12 @@ public class signUp extends AppCompatActivity {
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
+                                    pb.setVisibility(View.GONE);
                                     Toast.makeText(signUp.this, "Failed", Toast.LENGTH_LONG).show();
                                 }
                             });
                         } else{
+                            pb.setVisibility(View.GONE);
                             Toast.makeText(signUp.this,"Failed", Toast.LENGTH_LONG).show();
                         }
                     }

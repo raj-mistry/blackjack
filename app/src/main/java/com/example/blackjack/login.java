@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,6 +19,7 @@ public class login extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private EditText txtEmail, txtPass;
+    private ProgressBar pb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,7 @@ public class login extends AppCompatActivity {
         txtEmail = findViewById(R.id.txtEmail);
         txtPass = findViewById(R.id.txtPassword);
         mAuth = FirebaseAuth.getInstance();
+        pb = findViewById(R.id.progressBar);
     }
 
     public void signIn(View view){
@@ -44,17 +47,21 @@ public class login extends AppCompatActivity {
             return;
         }
 
+        pb.setVisibility(View.VISIBLE);
+
         mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
                     String UID = FirebaseAuth.getInstance().getUid();
+                    pb.setVisibility(View.GONE);
                     Toast.makeText(login.this, "Logged In Successfully", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getBaseContext(), homePage.class);
                     intent.putExtra("USER", UID);
                     startActivity(intent);
                 }
                 else{
+                    pb.setVisibility(View.GONE);
                     Toast.makeText(login.this, "Failed to login", Toast.LENGTH_LONG).show();
                 }
             }

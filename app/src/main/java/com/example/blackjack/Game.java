@@ -1,13 +1,29 @@
 package com.example.blackjack;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -23,6 +39,16 @@ public class Game extends AppCompatActivity {
 
     protected boolean userBust=false; //true if user bust, player loses
     protected boolean dealerBust=false; //true if dealer bust, player wins, dealer loses.
+
+    //Get UID and bet value, and their respective DocReferences to keep track of user and game session
+    protected String UID;
+    protected double betVal;
+    protected double balance;
+    protected DocumentReference mDocRef;
+    protected CollectionReference mGameRef = FirebaseFirestore.getInstance().collection("game");
+    public static final String TAG = "Player Balance";
+    public static final String BALANCE="balance";
+
 
     // all the text views in the xml,
     // ___Pile is the integer sum of the cards
@@ -43,6 +69,10 @@ public class Game extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        Intent intent = getIntent();
+        betVal = intent.getDoubleExtra("BET", 0);
+        UID = intent.getStringExtra("USER");
+        mDocRef = FirebaseFirestore.getInstance().document("playerInfo/" +UID);
 
         dealerPile = (TextView) findViewById(R.id.dealerPile);
         dealerCards = (TextView) findViewById(R.id.dealerCards);
@@ -52,6 +82,7 @@ public class Game extends AppCompatActivity {
         stopButton = findViewById(R.id.stopButton);
         returnButton = findViewById(R.id.returnButton);
         gameStatus = findViewById(R.id.gameStatus);
+        gameStatus.setText("Current bet: $"+betVal+"0");
         returnButton.setEnabled(false);
 
         Deck = shuffleArray(Deck);
@@ -63,7 +94,7 @@ public class Game extends AppCompatActivity {
             public void onClick(View view) {
                 hitUser();
                 //hitUser();
-                if (userBust==true){
+                if (userBust){
                     //END THE GAME
                     gameStatus.setText("PLAYER BUST, PLAYER DEFEAT!");
                     stop();
@@ -75,7 +106,7 @@ public class Game extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 playDealer();
-                if (dealerBust==true){
+                if (dealerBust){
                     gameStatus.setText("DEALER BUST, PLAYER VICTORY!");
                     winStatus=true;
                 }
@@ -86,23 +117,60 @@ public class Game extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
+        //define what happens on return
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //define what happens on return
-                reset();
+                //Add game info entry to table
+                Map<String, Object> dataToSave = new HashMap<String, Object>();
+                dataToSave.put("User", UID);
+                dataToSave.put("Player Hand", userTotal);
+                dataToSave.put("Dealer Hand", dealerTotal);
+                dataToSave.put("Player Won", winStatus);
+                dataToSave.put("Bet Value", betVal);
+                mGameRef.add(dataToSave).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(Game.this, "Game Over. Data Recorded", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                Map<String, Object> playerData = new HashMap<String, Object>();
+                playerData.put(BALANCE, calcBalance());
+                mDocRef.update(playerData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Balance updated");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Got an error");
+                    }
+                });
+                Intent intent = new Intent(getBaseContext(), homePage.class);
+                intent.putExtra("USER", UID);
+                startActivity(intent);
             }
         });
 
-
-
-
     }
+
+    public void onStart(){
+        super.onStart();
+        mDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                if (documentSnapshot.exists()) {
+                    balance = documentSnapshot.getDouble(BALANCE);
+                    Log.d(TAG, "Textview updated");
+                } else if (error != null) {
+                    Log.w(TAG, "Got an error", error);
+                }
+            }
+        });
+    }
+
     public void reset(){
         userArray = new ArrayList<Integer>();
         dealerArray = new ArrayList<Integer>();
@@ -117,7 +185,7 @@ public class Game extends AppCompatActivity {
         hitDealer();
         hitUser();
 
-        gameStatus.setText("");
+        gameStatus.setText("Current bet: $"+betVal+"0");
 
         hitMeButton.setEnabled(true);
         stopButton.setEnabled(true);
@@ -188,6 +256,14 @@ public class Game extends AppCompatActivity {
         hitMeButton.setEnabled(false);
         stopButton.setEnabled(false);
         returnButton.setEnabled(true);
+    }
+
+    public double calcBalance(){
+        if (winStatus)
+            balance = balance + (betVal*2);
+        else
+            balance = balance - betVal;
+        return balance;
     }
 
 }

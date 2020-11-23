@@ -59,13 +59,22 @@ public class bettingScreen extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 if (documentSnapshot.exists()) {
                     currentBalance = documentSnapshot.getDouble("balance");
-                    betValue.setValueTo((float) currentBalance);
+                    if (currentBalance <= 0){
+                        Toast.makeText(bettingScreen.this, "Out of funds. Please add more funds to your balance before playing", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getBaseContext(), homePage.class);
+                        intent.putExtra("USER", UID);
+                        startActivity(intent);
+                    }
+                    else {
+                        betValue.setValueTo((float) currentBalance);
+                    }
                     Log.d(TAG, "Textview updated");
                 } else if (error != null) {
                     Log.w(TAG, "Got an error", error);
                 }
             }
         });
+
     }
 
     public void placeBet(View view){
@@ -82,7 +91,10 @@ public class bettingScreen extends AppCompatActivity {
         mDocRef.add(dataToSave).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
-                bet.setText("You have placed a bet of: $"+betValue.getValue());
+                Intent intent = new Intent(getBaseContext(), Game.class);
+                intent.putExtra("USER", UID);
+                intent.putExtra("BET", betAmount);
+                startActivity(intent);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -90,6 +102,7 @@ public class bettingScreen extends AppCompatActivity {
                 bet.setText("Error setting bet. Please try again");
             }
         });
+
     }
 
 }
