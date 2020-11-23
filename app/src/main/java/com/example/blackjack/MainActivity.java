@@ -42,11 +42,6 @@ public class MainActivity extends AppCompatActivity {
     String UID, name, email, username;
 
 
-    /*
-    AppDatabase db = Room.databaseBuilder(getApplicationContext(), //this is our on-device storage
-            AppDatabase.class, "database-name").build();
-     */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,8 +78,10 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         double newBalance = currentBalance + Double.parseDouble(balance);
+        double finalBalance = Math.round(newBalance*100.0)/100.0;
+
         Map<String, Object> dataToSave = new HashMap<String, Object>();
-        dataToSave.put(BALANCE, newBalance);
+        dataToSave.put(BALANCE, finalBalance);
         mDocRef.update(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {

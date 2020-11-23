@@ -27,7 +27,7 @@ import java.util.Map;
 public class signUp extends AppCompatActivity {
 
     public static final String TAG = "Player Info";
-    TextView fname, lname, email, username, password, confirmedPass, result;
+    TextView fname, lname, email, username, password, confirmedPass;
     private FirebaseAuth mAuth;
 
 
@@ -43,7 +43,6 @@ public class signUp extends AppCompatActivity {
         username = findViewById(R.id.textUser);
         password = findViewById(R.id.textPassword);
         confirmedPass = findViewById(R.id.textConfirm);
-        result = findViewById(R.id.textResult);
     }
 
     public void signedUp(View view){
@@ -99,7 +98,7 @@ public class signUp extends AppCompatActivity {
                                 }
                             });
                         } else{
-                            Toast.makeText(signUp.this,"Failed 2", Toast.LENGTH_LONG).show();
+                            Toast.makeText(signUp.this,"Failed", Toast.LENGTH_LONG).show();
                         }
                     }
                 });

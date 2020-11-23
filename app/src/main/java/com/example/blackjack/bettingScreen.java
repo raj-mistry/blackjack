@@ -16,9 +16,13 @@ import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.slider.Slider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.ktx.Firebase;
 
 import java.text.DecimalFormat;
@@ -33,9 +37,10 @@ public class bettingScreen extends AppCompatActivity {
     String UID;
     TextView bet;
     Slider betValue;
+    double currentBalance;
 
     public CollectionReference mDocRef = FirebaseFirestore.getInstance().collection("bet");
-
+    public DocumentReference mRef;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +49,23 @@ public class bettingScreen extends AppCompatActivity {
         UID = intent.getStringExtra("USER");
         bet = (TextView)findViewById(R.id.textValue);
         betValue = (Slider)findViewById(R.id.betSlider);
+        mRef = FirebaseFirestore.getInstance().document("playerInfo/" +UID);
+    }
+
+    protected void onStart(){
+        super.onStart();
+        mRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                if (documentSnapshot.exists()) {
+                    currentBalance = documentSnapshot.getDouble("balance");
+                    betValue.setValueTo((float) currentBalance);
+                    Log.d(TAG, "Textview updated");
+                } else if (error != null) {
+                    Log.w(TAG, "Got an error", error);
+                }
+            }
+        });
     }
 
     public void placeBet(View view){
@@ -52,9 +74,10 @@ public class bettingScreen extends AppCompatActivity {
             bet.setText("You must bet a value grater than 0");
             return;
         }
+        double betAmount = Math.round(betValue.getValue() * 100.0)/100.0;
         Map<String, Object> dataToSave = new HashMap<String, Object>();
         dataToSave.put("User", UID);
-        dataToSave.put(AMOUNT, (double)betValue.getValue());
+        dataToSave.put(AMOUNT, betAmount);
 
         mDocRef.add(dataToSave).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
@@ -67,18 +90,6 @@ public class bettingScreen extends AppCompatActivity {
                 bet.setText("Error setting bet. Please try again");
             }
         });
-        /*
-        if (betValue.getValue() == 0) {
-            bet.setText("You must bet a value grater than 0");
-            return;
-        }
-
-
-
-         */
     }
 
-    /*
-    TO-DO: Prevent user from going above maximum value on their bet
-     */
 }

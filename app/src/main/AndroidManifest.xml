@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BlackJack">
-        <activity android:name=".homePage"></activity>
-        <activity android:name=".login" />
+        <activity android:name=".homePage"/>
+        <activity android:name=".login"
+            android:exported="true" />
         <activity
             android:name=".Game"
             android:exported="true" />
