@@ -15,7 +15,6 @@ public class splashscreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashscreen);
         getWindow().getDecorView().setBackgroundColor(Color.BLACK);
-        getActionBar().hide();
 
         mWaitHandler.postDelayed(new Runnable() {
             @Override
