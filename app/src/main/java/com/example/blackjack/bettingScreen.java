@@ -26,6 +26,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.ktx.Firebase;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +61,7 @@ public class bettingScreen extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 if (documentSnapshot.exists()) {
                     currentBalance = documentSnapshot.getDouble("balance");
-                    if (currentBalance <= 0){
+                    if (currentBalance <= 0.1){
                         Toast.makeText(bettingScreen.this, "Out of funds. Please add more funds to your balance before playing", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getBaseContext(), homePage.class);
                         intent.putExtra("USER", UID);
@@ -84,9 +86,14 @@ public class bettingScreen extends AppCompatActivity {
             return;
         }
         double betAmount = Math.round(betValue.getValue() * 100.0)/100.0;
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = df.format(c.getTime());
+
         Map<String, Object> dataToSave = new HashMap<String, Object>();
         dataToSave.put("User", UID);
         dataToSave.put(AMOUNT, betAmount);
+        dataToSave.put("Started", formattedDate);
 
         mDocRef.add(dataToSave).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override

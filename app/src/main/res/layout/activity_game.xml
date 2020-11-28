@@ -6,6 +6,204 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/dealerCard1"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/dealerCard4"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/dealerCard3"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/dealerCard3"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/dealerCard2"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/dealerCard9"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/dealerCard8"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/dealerCard8"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/dealerCard7"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/dealerCard7"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/dealerCard6"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/dealerCard5"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.017"
+        app:layout_constraintStart_toEndOf="@+id/dealerCard4"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/dealerCard6"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/dealerCard5"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/dealerCard2"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/dealerCard1"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imgCard8"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgCard7"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.519"/>
+
+    <ImageView
+        android:id="@+id/imgCard7"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgCard6"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.519"/>
+
+    <ImageView
+        android:id="@+id/imgCard6"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgCard5"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.519"/>
+
+    <ImageView
+        android:id="@+id/imgCard5"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgCard4"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.519"/>
+
+    <ImageView
+        android:id="@+id/imgCard2"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgCard1"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.519"/>
+
+    <ImageView
+        android:id="@+id/imgCard3"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgCard2"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.519"/>
+
+    <ImageView
+        android:id="@+id/imgCard1"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.519" />
+
+    <ImageView
+        android:id="@+id/imgCard9"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgCard8"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.519"/>
+
+    <ImageView
+        android:id="@+id/imgCard4"
+        android:layout_width="45dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgCard3"
+        app:layout_constraintTop_toBottomOf="@+id/dealerCards"
+        app:layout_constraintVertical_bias="0.519"/>
+
     <Button
         android:id="@+id/hitMeButton"
         android:layout_width="wrap_content"
@@ -40,10 +238,10 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.083"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/userCards"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.701" />
+        app:layout_constraintVertical_bias="0.717" />
 
     <TextView
         android:id="@+id/dealerPile"
@@ -56,20 +254,20 @@
         app:layout_constraintHorizontal_bias="0.064"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.038" />
+        app:layout_constraintVertical_bias="0.022" />
 
     <TextView
         android:id="@+id/userCards"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User Cards"
+        android:text="User Cards:"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.096"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/dealerCards"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.593" />
+        app:layout_constraintVertical_bias="0.499" />
 
     <TextView
         android:id="@+id/dealerCards"
@@ -79,10 +277,10 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.059"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/dealerPile"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.109" />
+        app:layout_constraintVertical_bias="0.088" />
 
     <TextView
         android:id="@+id/gameStatus"
@@ -94,7 +292,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.38" />
+        app:layout_constraintVertical_bias="0.374" />
 
     <Button
         android:id="@+id/returnButton"

@@ -22,6 +22,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +39,7 @@ public class signUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        pb = findViewById(R.id.progressBar);
+        pb = findViewById(R.id.progressBar2);
         mAuth = FirebaseAuth.getInstance();
         fname = findViewById(R.id.textFname);
         lname = findViewById(R.id.textLname);
@@ -72,21 +74,26 @@ public class signUp extends AppCompatActivity {
             username.setError("Field is empty or invalid");
             return;
         }
-        if (!password1.equals(confirmedPass1) || password.getText().toString().isEmpty()){
+        if (!password1.equals(confirmedPass1) || password1.isEmpty() || password1.length()<6){
             password.setError("Invalid password or passwords do not match");
             return;
         }
+        //pb.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(email1, password1)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>(){
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
+                            Calendar c = Calendar.getInstance();
+                            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            String formattedDate = df.format(c.getTime());
                             String UID = FirebaseAuth.getInstance().getUid();
                             DocumentReference mDocRef = FirebaseFirestore.getInstance().document("playerInfo/"+UID);
-                            Users user = new Users(fname1, lname1, username1, email1);
+                            Users user = new Users(fname1, lname1, username1, email1, formattedDate);
                             mDocRef.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+                                    //pb.setVisibility(View.GONE);
                                     Toast.makeText(signUp.this, "Success", Toast.LENGTH_LONG).show();
                                     Intent intent = new Intent(getBaseContext(), homePage.class);
                                     intent.putExtra("USER", UID);
@@ -95,10 +102,12 @@ public class signUp extends AppCompatActivity {
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
+                                    //pb.setVisibility(View.GONE);
                                     Toast.makeText(signUp.this, "Failed", Toast.LENGTH_LONG).show();
                                 }
                             });
                         } else{
+                            //pb.setVisibility(View.GONE);
                             Toast.makeText(signUp.this,"Failed", Toast.LENGTH_LONG).show();
                         }
                     }

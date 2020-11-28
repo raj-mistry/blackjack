@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -28,6 +29,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "Player Balance";
 
     public DocumentReference mDocRef;
+    public CollectionReference pDocRef = FirebaseFirestore.getInstance().collection("addFunds");
 
     TextView balanceTextView;
     double currentBalance;
@@ -79,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
         }
         double newBalance = currentBalance + Double.parseDouble(balance);
         double finalBalance = Math.round(newBalance*100.0)/100.0;
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = df.format(c.getTime());
 
         Map<String, Object> dataToSave = new HashMap<String, Object>();
         dataToSave.put(BALANCE, finalBalance);
@@ -91,6 +98,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.w(TAG, "Document was not saved", e);
+            }
+        });
+
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put("Amount Added", Double.parseDouble(balance));
+        data.put("Previous Balance", currentBalance);
+        data.put("New Balance", finalBalance);
+        data.put("User", UID);
+        data.put("Date", formattedDate);
+        pDocRef.add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Log.d(TAG, "Document has been saved");
             }
         });
     }
