@@ -39,7 +39,7 @@ public class signUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        pb = findViewById(R.id.progressBar2);
+        pb = findViewById(R.id.progressBar);
         mAuth = FirebaseAuth.getInstance();
         fname = findViewById(R.id.textFname);
         lname = findViewById(R.id.textLname);
@@ -78,7 +78,7 @@ public class signUp extends AppCompatActivity {
             password.setError("Invalid password or passwords do not match");
             return;
         }
-        //pb.setVisibility(View.VISIBLE);
+        pb.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(email1, password1)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>(){
                     @Override
@@ -89,25 +89,42 @@ public class signUp extends AppCompatActivity {
                             String formattedDate = df.format(c.getTime());
                             String UID = FirebaseAuth.getInstance().getUid();
                             DocumentReference mDocRef = FirebaseFirestore.getInstance().document("playerInfo/"+UID);
+                            DocumentReference mGameRef = FirebaseFirestore.getInstance().document("records/"+UID);
                             Users user = new Users(fname1, lname1, username1, email1, formattedDate);
                             mDocRef.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    //pb.setVisibility(View.GONE);
-                                    Toast.makeText(signUp.this, "Success", Toast.LENGTH_LONG).show();
-                                    Intent intent = new Intent(getBaseContext(), homePage.class);
-                                    intent.putExtra("USER", UID);
-                                    startActivity(intent);
+                                    pb.setVisibility(View.GONE);
+                                    Map<String, Object> dataToSave = new HashMap<String, Object>();
+                                    dataToSave.put("username", username1);
+                                    dataToSave.put("totalWinnings", 0);
+                                    dataToSave.put("gamesPlayed", 0);
+                                    dataToSave.put("victories", 0);
+                                    mGameRef.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Toast.makeText(signUp.this, "Success", Toast.LENGTH_LONG).show();
+                                            Intent intent = new Intent(getBaseContext(), homePage.class);
+                                            intent.putExtra("USER", UID);
+                                            startActivity(intent);
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            pb.setVisibility(View.GONE);
+                                            Toast.makeText(signUp.this, "Failed", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    //pb.setVisibility(View.GONE);
+                                    pb.setVisibility(View.GONE);
                                     Toast.makeText(signUp.this, "Failed", Toast.LENGTH_LONG).show();
                                 }
                             });
                         } else{
-                            //pb.setVisibility(View.GONE);
+                            pb.setVisibility(View.GONE);
                             Toast.makeText(signUp.this,"Failed", Toast.LENGTH_LONG).show();
                         }
                     }

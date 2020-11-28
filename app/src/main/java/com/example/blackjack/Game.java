@@ -48,8 +48,10 @@ public class Game extends AppCompatActivity {
     protected String UID;
     protected double betVal;
     protected double balance;
+    protected double victories, gamesPlayed, totalEarnings;
     protected DocumentReference mDocRef;
     protected CollectionReference mGameRef = FirebaseFirestore.getInstance().collection("game");
+    protected DocumentReference mRecordRef;
     public static final String TAG = "Player Balance";
     public static final String BALANCE="balance";
 
@@ -100,6 +102,7 @@ public class Game extends AppCompatActivity {
         betVal = intent.getDoubleExtra("BET", 0);
         UID = intent.getStringExtra("USER");
         mDocRef = FirebaseFirestore.getInstance().document("playerInfo/" +UID);
+        mRecordRef = FirebaseFirestore.getInstance().document("records/"+UID);
 
         dealerPile = (TextView) findViewById(R.id.dealerPile);
         dealerCards = (TextView) findViewById(R.id.dealerCards);
@@ -150,39 +153,9 @@ public class Game extends AppCompatActivity {
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Add game info entry to table
-                Calendar c = Calendar.getInstance();
-
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String formattedDate = df.format(c.getTime());
-
-                Map<String, Object> dataToSave = new HashMap<String, Object>();
-                dataToSave.put("User", UID);
-                dataToSave.put("Player Hand", userTotal);
-                dataToSave.put("Dealer Hand", dealerTotal);
-                dataToSave.put("Player Won", winStatus);
-                dataToSave.put("Bet Value", betVal);
-                dataToSave.put("Ended", formattedDate);
-                mGameRef.add(dataToSave).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(Game.this, "Game Over. Data Recorded", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                Map<String, Object> playerData = new HashMap<String, Object>();
-                playerData.put(BALANCE, calcBalance());
-                mDocRef.update(playerData).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Balance updated");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Got an error");
-                    }
-                });
+                setGameData();
+                setBalance();
+                setRecord();
                 Intent intent = new Intent(getBaseContext(), homePage.class);
                 intent.putExtra("USER", UID);
                 startActivity(intent);
@@ -198,7 +171,21 @@ public class Game extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 if (documentSnapshot.exists()) {
                     balance = documentSnapshot.getDouble(BALANCE);
-                    Log.d(TAG, "Textview updated");
+                    Log.d(TAG, "Balance updated");
+                } else if (error != null) {
+                    Log.w(TAG, "Got an error", error);
+                }
+            }
+        });
+
+        mRecordRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@com.google.firebase.database.annotations.Nullable DocumentSnapshot documentSnapshot, @com.google.firebase.database.annotations.Nullable FirebaseFirestoreException error) {
+                if (documentSnapshot.exists()) {
+                    totalEarnings = documentSnapshot.getDouble("totalWinnings");
+                    victories = documentSnapshot.getDouble("victories");
+                    gamesPlayed = documentSnapshot.getDouble("gamesPlayed");
+                    Log.d(TAG, "Records updated");
                 } else if (error != null) {
                     Log.w(TAG, "Got an error", error);
                 }
@@ -338,6 +325,64 @@ public class Game extends AppCompatActivity {
         else
             balance = balance - betVal;
         return balance;
+    }
+
+    public void setGameData(){
+        Calendar c = Calendar.getInstance();
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = df.format(c.getTime());
+
+        Map<String, Object> dataToSave = new HashMap<String, Object>();
+        dataToSave.put("User", UID);
+        dataToSave.put("Player Hand", userTotal);
+        dataToSave.put("Dealer Hand", dealerTotal);
+        dataToSave.put("Player Won", winStatus);
+        dataToSave.put("Bet Value", betVal);
+        dataToSave.put("Ended", formattedDate);
+        mGameRef.add(dataToSave).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Toast.makeText(Game.this, "Game Over. Data Recorded", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void setBalance(){
+        Map<String, Object> playerData = new HashMap<String, Object>();
+        playerData.put(BALANCE, calcBalance());
+        mDocRef.update(playerData).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "Balance updated");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Got an error");
+            }
+        });
+    }
+
+    public void setRecord(){
+        gamesPlayed+=1;
+        if (winStatus){
+            totalEarnings=totalEarnings+(betVal*2);
+            victories+=1;
+        }
+        else{
+            totalEarnings=totalEarnings-betVal;
+        }
+        Map<String, Object> dataToSave = new HashMap<String, Object>();
+        dataToSave.put("totalWinnings", totalEarnings);
+        dataToSave.put("victories", victories);
+        dataToSave.put("gamesPlayed",gamesPlayed);
+        mRecordRef.update(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "Balance updated");
+            }
+        });
     }
 
     public void setCardImages(){
