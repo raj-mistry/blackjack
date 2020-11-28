@@ -33,4 +33,9 @@ public class homePage extends AppCompatActivity {
         intent.putExtra("USER", UID);
         startActivity(intent);
     }
+
+    public void howtoplay(View view){
+        Intent intent = new Intent(getBaseContext(), howtoplay.class);
+        startActivity(intent);
+    }
 }

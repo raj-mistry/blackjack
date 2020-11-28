@@ -23,6 +23,7 @@
         android:id="@+id/btnInstructions"
         android:layout_width="161dp"
         android:layout_height="46dp"
+        android:onClick="howtoplay"
         android:text="How to Play"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
