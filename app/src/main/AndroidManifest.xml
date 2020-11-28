@@ -9,23 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BlackJack">
-        <activity android:name=".howtoplay"></activity>
         <activity
-            android:name=".splashscreen"
-            android:theme="@style/NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".history"
+            android:exported="true" />
         <activity android:name=".game2" />
         <activity
             android:name=".homePage"
             android:exported="true" />
-        <activity
-            android:name=".login"
-            android:exported="true" />
+        <activity android:name=".login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Game"
             android:exported="true" />
