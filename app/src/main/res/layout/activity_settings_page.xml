@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".settingsPage">
+
+    <Button
+        android:id="@+id/btnHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View History"
+        android:onClick="viewHistory"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.468"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLeaderboard"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <Button
+        android:id="@+id/btnLeaderboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Leaderboard"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.468"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnFunds"
+        app:layout_constraintVertical_bias="0.138" />
+
+    <Button
+        android:id="@+id/btnFunds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Funds"
+        android:onClick="addFunds"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.468"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnProfile"
+        app:layout_constraintVertical_bias="0.116" />
+
+    <Button
+        android:id="@+id/btnProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Profile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.468"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.212" />
+</androidx.constraintlayout.widget.ConstraintLayout>

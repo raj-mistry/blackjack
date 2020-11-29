@@ -335,10 +335,10 @@ public class Game extends AppCompatActivity {
 
         Map<String, Object> dataToSave = new HashMap<String, Object>();
         dataToSave.put("User", UID);
-        dataToSave.put("Player Hand", userTotal);
-        dataToSave.put("Dealer Hand", dealerTotal);
-        dataToSave.put("Player Won", winStatus);
-        dataToSave.put("Bet Value", betVal);
+        dataToSave.put("playerHand", userTotal);
+        dataToSave.put("dealerHand", dealerTotal);
+        dataToSave.put("playerWon", winStatus);
+        dataToSave.put("betValue", betVal);
         dataToSave.put("Ended", formattedDate);
         mGameRef.add(dataToSave).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
@@ -350,7 +350,7 @@ public class Game extends AppCompatActivity {
 
     public void setBalance(){
         Map<String, Object> playerData = new HashMap<String, Object>();
-        playerData.put(BALANCE, calcBalance());
+        playerData.put(BALANCE, Math.round(calcBalance()*100)/100);
         mDocRef.update(playerData).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -374,7 +374,7 @@ public class Game extends AppCompatActivity {
             totalEarnings=totalEarnings-betVal;
         }
         Map<String, Object> dataToSave = new HashMap<String, Object>();
-        dataToSave.put("totalWinnings", totalEarnings);
+        dataToSave.put("totalWinnings", Math.round(totalEarnings*100)/100);
         dataToSave.put("victories", victories);
         dataToSave.put("gamesPlayed",gamesPlayed);
         mRecordRef.update(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {

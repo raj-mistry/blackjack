@@ -23,7 +23,7 @@ public class homePage extends AppCompatActivity {
     }
 
     public void launchSettings(View view){
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        Intent intent = new Intent(getBaseContext(), settingsPage.class);
         intent.putExtra("USER", UID);
         startActivity(intent);
     }
