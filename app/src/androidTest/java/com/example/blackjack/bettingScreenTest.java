@@ -1,5 +1,10 @@
 package com.example.blackjack;
 
+import static org.junit.Assert.*;
+
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
+import static org.hamcrest.core.IsNot.not;
+import static org.junit.Assert.*;
 import android.content.Context;
 import android.content.Intent;
 
@@ -22,27 +27,23 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.*;
 
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
+public class bettingScreenTest {
 
     String UID = "2tPIBsRrCxcC9Hh19gEmfu3kgdS2";
 
     @Rule
-    public ActivityTestRule<MainActivity> mMainActivityTestRule = new ActivityTestRule<MainActivity>(MainActivity.class){
+    public ActivityTestRule<bettingScreen> mMainActivityTestRule = new ActivityTestRule<bettingScreen>(bettingScreen.class){
         @Override
         protected Intent getActivityIntent() {
             Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-            Intent result = new Intent(targetContext, MainActivity.class);
+            Intent result = new Intent(targetContext, bettingScreen.class);
             result.putExtra("USER", UID);
             return result;
         }
     };
+
     @Test
     public void useAppContext() {
         // Context of the app under test.
@@ -51,17 +52,21 @@ public class ExampleInstrumentedTest {
     }
 
     @Test
-    public void ResetTotal(){ //test the use case of settings
-        onView(withId(R.id.resetButton)).perform(click());
-        onView(withId(R.id.playerBalance)).check(matches(withText(containsString("0"))));
-        onView(withId(R.id.updateBalance)).perform(click());
-        onView(withId(R.id.updateBalance)).perform(typeText("100"));
-        onView(withId(R.id.updateButton)).perform(click());
+    public void testBet(){ //test the use case of settings
+        onView(withId(R.id.betSlider)).perform(click());
+        onView(withId(R.id.placeBet)).perform(click());
+
         try {
-            Thread.sleep(1000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        onView(withId(R.id.playerBalance)).check(matches(withText(containsString("100"))));
+    }
+
+    @Test
+    public void testSwitchActivity() {
+        onView(withId(R.id.betSlider)).perform(click());
+        onView(withId(R.id.placeBet)).perform(click());
+        onView(withId(R.id.gameStatus)).check(matches(withText(containsString("Current bet:"))));
     }
 }
