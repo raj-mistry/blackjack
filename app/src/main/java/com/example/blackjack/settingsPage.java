@@ -29,12 +29,19 @@ public class settingsPage extends AppCompatActivity {
     }
 
     public void viewProfile(View view){
-
+        Intent intent = new Intent(getBaseContext(), profile.class);
+        intent.putExtra("USER", UID);
+        startActivity(intent);
     }
 
     public void addFunds(View view){
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("USER", UID);
+        startActivity(intent);
+    }
+
+    public void signOut(View view){
+        Intent intent = new Intent(getBaseContext(), login.class);
         startActivity(intent);
     }
 }
