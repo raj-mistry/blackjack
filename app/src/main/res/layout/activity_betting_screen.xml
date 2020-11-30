@@ -5,26 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".bettingScreen"
+    android:background="@drawable/poker_board"
     tools:ignore="MissingClass">
 
     <com.google.android.material.slider.Slider
         android:id="@+id/betSlider"
         android:layout_width="225dp"
         android:layout_height="56dp"
+        android:scrollbarThumbHorizontal="@color/white"
+        android:scrollbarThumbVertical="@color/white"
+        android:stepSize="0.1"
         android:valueFrom="0"
         android:valueTo="20"
-        android:stepSize="0.1"
+        app:haloColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:trackColor="#FFFFFF" />
 
     <Button
         android:id="@+id/placeBet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Place Bet"
         android:onClick="placeBet"
+        android:text="Place Bet"
+        app:backgroundTint="@android:color/holo_red_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,11 +41,26 @@
         android:id="@+id/textValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.778" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        android:text="Place Bet"
+        android:textColor="@color/white"
+        android:textAllCaps="true"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
