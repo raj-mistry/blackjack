@@ -1,5 +1,5 @@
-# blackjack
-software engineering project
+# BlackJack Android app
+A Software Engineering project to create a black-jack simulator completed with a fully functional virtual gambling system backed up by cloud storage through Google's platform. Currently unavailable through the playstore, but we can send you the apk if you'd like :D
 
 This project was created as a software engineering final project.
 Software used: Android Studio
